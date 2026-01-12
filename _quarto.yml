@@ -1,0 +1,61 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - "downloads/**"
+
+website:
+  title: "PRECISION Reports"
+  navbar:
+    background: primary
+    logo: assets/images/precision-logo.png
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Berichte"
+        href: reports/index.qmd
+      - text: "Downloads"
+        href: reports/downloads.qmd
+      - text: "Anleitung"
+        href: guide.qmd
+      - text: "Workflow"
+        href: workflow.qmd
+    right:
+      - icon: github
+        href: https://github.com/werzingerma/osws-scientific-report
+  page-footer:
+    left: "PRECISION Project - Open Source Workflow"
+    center: "Erstellt mit [Quarto](https://quarto.org/)"
+    right:
+      - icon: github
+        href: https://github.com/werzingerma/osws-scientific-report
+
+format:
+  html:
+    theme:
+      light: [flatly, assets/css/precision-theme.scss]
+    css: assets/css/custom.css
+    toc: true
+    toc-location: right
+    code-copy: true
+    code-fold: true
+    code-overflow: scroll
+    code-tools: true
+    anchor-sections: true
+    smooth-scroll: true
+    
+execute:
+  cache: true
+  freeze: auto
+
+bibliography: references.bib
+csl: assets/csl/apa-7th-edition.csl
+
+jupyter: python3
+
+knitr:
+  opts_chunk:
+    echo: true
+    message: false
+    warning: false
+    fig.align: center
