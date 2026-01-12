@@ -1,0 +1,375 @@
+---
+title: "Anleitung"
+subtitle: "Setup und Nutzung des PRECISION Workflows"
+toc: true
+toc-depth: 3
+---
+
+::: {.panel-tabset}
+
+## Voraussetzungen & Einrichtung
+
+### 1. Software installieren
+
+#### 1.1 Git
+
+::: {.panel-tabset}
+
+##### macOS
+```bash
+# Mit Homebrew
+brew install git
+
+# Oder Xcode Command Line Tools
+xcode-select --install
+```
+
+##### Windows
+Download von [git-scm.com](https://git-scm.com/download/win) und Installer ausführen.
+
+##### Linux
+```bash
+# Ubuntu/Debian
+sudo apt-get install git
+
+# Fedora
+sudo dnf install git
+```
+:::
+
+#### 1.2 Python
+
+Empfohlen: Python 3.10 oder höher
+
+::: {.panel-tabset}
+
+##### macOS
+```bash
+brew install python@3.11
+```
+
+##### Windows
+Download von [python.org](https://www.python.org/downloads/) - **"Add to PATH" aktivieren!**
+
+##### Linux
+```bash
+sudo apt-get install python3 python3-pip python3-venv
+```
+:::
+
+#### 1.3 Quarto
+
+Download von [quarto.org/docs/get-started](https://quarto.org/docs/get-started/)
+
+Nach der Installation testen:
+```bash
+quarto --version
+```
+
+---
+
+### 2. Repository einrichten
+
+#### 2.1 Repository klonen
+
+```bash
+git clone https://github.com/werzingerma/osws-scientific-report.git
+cd osws-scientific-report
+```
+
+#### 2.2 Python-Umgebung erstellen
+
+```bash
+# Virtuelle Umgebung erstellen
+python -m venv .venv
+
+# Aktivieren
+# macOS/Linux:
+source .venv/bin/activate
+# Windows:
+.venv\Scripts\activate
+
+# Abhängigkeiten installieren
+pip install -r requirements.txt
+```
+
+#### 2.3 Jupyter-Kernel registrieren
+
+```bash
+python -m ipykernel install --user --name=precision --display-name="PRECISION Python"
+```
+
+---
+
+### Häufige Probleme bei der Einrichtung
+
+::: {.callout-warning}
+#### Problem: "Quarto not found"
+**Lösung**: Stelle sicher, dass Quarto im PATH ist. Nach der Installation Terminal neu starten.
+:::
+
+::: {.callout-warning}
+#### Problem: "No module named 'pandas'"
+**Lösung**: Virtuelle Umgebung aktivieren und `pip install -r requirements.txt` ausführen.
+:::
+
+::: {.callout-warning}
+#### Problem: GitHub Pages zeigt 404
+**Lösung**: In Repository Settings → Pages → Source auf "GitHub Actions" setzen.
+:::
+
+
+## Neue Berichte erstellen
+
+### 3. Notebook erstellen & ausführen
+
+Erstelle dein Jupyter Notebook im Ordner `notebooks/` mit VS Code, JupyterLab oder deiner bevorzugten Umgebung.
+
+::: {.callout-important}
+#### Wichtig
+Das Notebook muss **vollständig ausgeführt** sein. Alle Zellen sollten ihre Outputs enthalten, damit diese in den generierten Reports erscheinen.
+:::
+
+#### Best Practices für Notebooks
+
+- **Reproduzierbarkeit**: Setze Random Seeds (`np.random.seed(42)`)
+- **Relative Pfade**: Verwende `../data/` statt absolute Pfade
+- **Metadaten im Header**: Füge einen YAML-Header in die erste **Raw**-Zelle ein:
+
+```yaml
+---
+title: "Meine Analyse"
+author: "Dein Name"
+date: 2024-12-24
+description: "Kurze Beschreibung der Analyse"
+categories: [Statistik, Analyse]
+format:
+  html:
+    code-fold: true
+execute:
+  warning: false
+  message: false
+---
+```
+
+::: {.callout-tip}
+#### Raw-Zelle erstellen
+In JupyterLab: Zelle auswählen → Cell Type → Raw
+In VS Code: Zelle-Dropdown → Raw
+:::
+
+#### Lokale Vorschau
+
+Um die Website lokal zu testen:
+
+```bash
+quarto preview
+```
+
+---
+
+### 4. Veröffentlichen
+
+#### Änderungen committen und pushen
+
+```bash
+# Dateien hinzufügen
+git add .
+
+# Commit erstellen
+git commit -m "Add: Neuer Bericht XY"
+
+# Pushen
+git push
+```
+
+Das war's! **Kein lokales Rendern nötig.**
+
+#### Was dann passiert
+
+Nach dem Push läuft automatisch (ca. 3-5 Minuten):
+
+1. **GitHub Action** wird gestartet
+2. **Quarto rendert** die Website (HTML)
+3. **PDF, LaTeX, Word** werden automatisch generiert
+4. **Downloads-Seite** wird aktualisiert
+5. **GitHub Pages** wird deployed
+
+---
+
+### Zusammenfassung: Der schnelle Weg
+
+```bash
+# 1. Notebook in notebooks/ erstellen und ausführen (JupyterLab/VS Code)
+
+# 2. Pushen - fertig!
+git add . && git commit -m "Add: Neuer Bericht" && git push
+```
+
+Nach wenigen Minuten ist der Bericht online mit PDF, LaTeX und Word Downloads!
+
+
+## Publikation & Journal-Export
+
+### 6. Journal-Formate erstellen
+
+Für wissenschaftliche Publikationen stehen vordefinierte Profile zur Verfügung:
+
+#### Springer-Format
+
+```bash
+quarto render reports/mein-bericht.qmd --profile springer
+```
+
+Erstellt ein PDF mit:
+
+- Springer-konformer Formatierung
+- 1.5-facher Zeilenabstand
+- Nummerierte Abschnitte
+- Springer-Zitierstil
+
+#### Elsevier-Format
+
+```bash
+quarto render reports/mein-bericht.qmd --profile elsevier
+```
+
+Erstellt ein PDF mit:
+
+- Doppelter Zeilenabstand
+- Zeilennummern (für Review)
+- Elsevier Harvard-Zitierstil
+
+#### LaTeX für Weiterbearbeitung
+
+```bash
+quarto render reports/mein-bericht.qmd --to pdf --keep-tex
+```
+
+Erstellt PDF und behält die `.tex`-Datei:
+
+- Volle Kontrolle über LaTeX-Code
+- Weiterbearbeitung in Overleaf möglich
+- Integration in bestehende LaTeX-Projekte
+
+---
+
+### 7. Literaturverwaltung
+
+#### Zitationen im Text
+
+```markdown
+Wie bereits gezeigt wurde [@smith2023], ist dies relevant.
+
+Mehrere Quellen [@smith2023; @jones2024].
+
+@smith2023 zeigt, dass...
+```
+
+#### Bibliographie
+
+Alle Quellen werden in `references.bib` gepflegt:
+
+```bibtex
+@article{smith2023,
+  title = {Wichtige Studie},
+  author = {Smith, John},
+  journal = {Journal of Research},
+  year = {2023}
+}
+```
+
+---
+
+### 7.1 Zotero-Integration
+
+[Zotero](https://www.zotero.org/) ist ein kostenloses Open-Source-Tool zur Literaturverwaltung. Mit dem **Better BibTeX**-Plugin kann die Bibliographie automatisch synchronisiert werden.
+
+#### Schritt 1: Zotero installieren
+
+1. Download von [zotero.org](https://www.zotero.org/download/)
+2. Browser-Connector installieren (Chrome/Firefox/Safari)
+
+#### Schritt 2: Better BibTeX Plugin installieren
+
+1. Download von [retorque.re/zotero-better-bibtex](https://retorque.re/zotero-better-bibtex/installation/)
+2. In Zotero: **Tools → Add-ons → Zahnrad → Install Add-on From File**
+3. `.xpi`-Datei auswählen und Zotero neustarten
+
+#### Schritt 3: Automatischen Export einrichten
+
+1. In Zotero: Rechtsklick auf Sammlung → **Export Collection**
+2. Format: **Better BibTeX**
+3. **Keep updated** aktivieren
+4. Speichern als `references.bib` im Projektverzeichnis
+
+::: {.callout-tip}
+#### Automatische Synchronisation
+Mit "Keep updated" wird die `references.bib` bei jeder Änderung in Zotero automatisch aktualisiert.
+:::
+
+#### Schritt 4: Citation Keys konfigurieren
+
+In Zotero → **Preferences → Better BibTeX → Citation Keys**:
+
+Empfohlenes Format:
+```
+[auth:lower][year]
+```
+
+Beispiel: `smith2023`, `mueller2024`
+
+#### Workflow
+
+1. Paper/Quelle in Zotero speichern (Browser-Connector)
+2. `references.bib` wird automatisch aktualisiert
+3. Im Quarto-Dokument zitieren: `[@smith2023]`
+4. Quarto erstellt automatisch das Literaturverzeichnis
+
+::: {.callout-note}
+#### Zotero-Sammlungen
+Erstelle eine eigene Sammlung für das PRECISION-Projekt und exportiere nur diese Sammlung.
+:::
+
+---
+
+### 8. Verfügbare Zitierstile
+
+| Stil | Datei | Verwendung |
+|------|-------|------------|
+| APA 7th | `apa-7th-edition.csl` | Psychologie, Sozialwissenschaften |
+| Vancouver | `vancouver.csl` | Medizin, Biomedizin |
+| Springer | `springer-basic-author-date.csl` | Springer Nature Journals |
+| Elsevier Harvard | `elsevier-harvard.csl` | Elsevier Journals |
+| Nature | `nature.csl` | Nature, Nature Medicine, etc. |
+| The Lancet | `the-lancet.csl` | Lancet, Lancet Oncology, etc. |
+
+Zitierstil ändern in der `.qmd`-Datei:
+
+```yaml
+csl: assets/csl/vancouver.csl
+```
+
+---
+
+### 9. Verfügbare Journal-Profile
+
+| Profil | Befehl | Formatierung |
+|--------|--------|--------------|
+| Springer | `--profile springer` | 1.5x Zeilenabstand, nummerierte Abschnitte |
+| Elsevier | `--profile elsevier` | Doppelter Zeilenabstand, Zeilennummern |
+| Nature | `--profile nature` | Sans-serif, keine Nummerierung |
+| Lancet | `--profile lancet` | Times, Zeilennummern, doppelter Abstand |
+
+Beispiel:
+```bash
+quarto render notebooks/analyse.ipynb --to pdf --profile nature
+```
+
+:::
+
+## Hilfe & Support
+
+- **Quarto Dokumentation**: [quarto.org/docs](https://quarto.org/docs/)
+- **GitHub Actions**: [docs.github.com/actions](https://docs.github.com/en/actions)
+- **Quarto Journal Extensions**: [quarto.org/docs/journals](https://quarto.org/docs/journals/)
