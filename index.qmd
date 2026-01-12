@@ -1,0 +1,54 @@
+---
+title: "PRECISION Reports"
+subtitle: "Open-Source Workflow für wissenschaftliche Berichte"
+---
+
+## Willkommen
+
+Dies ist die zentrale Anlaufstelle für alle Berichte und Dokumentationen des **PRECISION-Projekts**.
+
+## Schnellzugriff
+
+::: {.grid}
+
+::: {.g-col-6}
+### Berichte
+Alle aktuellen Analysen und Reports
+
+[Zu den Berichten](reports/index.qmd){.btn .btn-primary}
+:::
+
+::: {.g-col-6}
+### Anleitung
+Setup und Nutzung des Workflows
+
+[Zur Anleitung](guide.qmd){.btn .btn-secondary}
+:::
+
+:::
+
+::: {.grid}
+
+::: {.g-col-6}
+### Workflow
+Übersicht des automatisierten Prozesses
+
+[Zum Workflow](workflow.qmd){.btn .btn-secondary}
+:::
+
+::: {.g-col-6}
+### GitHub
+Quellcode und Versionierung
+
+[Zum Repository](https://github.com/werzingerma/osws-scientific-report){.btn .btn-secondary}
+:::
+
+:::
+
+## Aktuelle Updates
+
+| Datum | Beschreibung |
+|-------|--------------|
+| 2024-12-24 | Automatische PDF/LaTeX/Word-Generierung via GitHub Actions |
+| 2024-12-23 | Website-Design aktualisiert |
+| 2024-12-22 | Initiales Setup des Workflows |
