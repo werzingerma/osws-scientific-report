@@ -1,27 +1,31 @@
 % Code-Block Formatierung fuer Zeilenumbruch in PDF
 \usepackage{fvextra}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\},fontsize=\small}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,commandchars=\\\{\},fontsize=\footnotesize}
+
+% Verbatim-Output auch umbrechen (fuer Pandas DataFrames etc.)
+\usepackage{fancyvrb}
+\fvset{breaklines=true,breakanywhere=true,fontsize=\footnotesize}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\footnotesize}
 
 % Lange Zeilen in Output umbrechen
 \usepackage{listings}
 \lstset{
-  basicstyle=\ttfamily\small,
+  basicstyle=\ttfamily\footnotesize,
   breaklines=true,
   breakatwhitespace=false,
+  breakautoindent=true,
   postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space}
 }
 
 % Tabellen auf Seitenbreite skalieren
 \usepackage{adjustbox}
-\let\oldtabular\tabular
-\let\endoldtabular\endtabular
-\renewenvironment{tabular}{\begin{adjustbox}{max width=\textwidth}\oldtabular}{\endoldtabular\end{adjustbox}}
-
-% Longtable auch skalieren
-\usepackage{ltablex}
-\keepXColumns
-
-% Kleinere Schrift fuer Tabellen
 \usepackage{etoolbox}
-\AtBeginEnvironment{longtable}{\small}
-\AtBeginEnvironment{tabular}{\small}
+
+% Longtable kleinere Schrift
+\AtBeginEnvironment{longtable}{\footnotesize}
+\AtBeginEnvironment{tabular}{\footnotesize}
+
+% Alle Tabellen automatisch skalieren
+\let\oldlongtable\longtable
+\let\endoldlongtable\endlongtable
+\renewenvironment{longtable}{\begin{adjustbox}{max width=\textwidth}\oldlongtable}{\endoldlongtable\end{adjustbox}}

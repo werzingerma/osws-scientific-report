@@ -35,6 +35,7 @@ GitHub Actions generiert automatisch:
 - HTML (Website)
 - PDF (mit TinyTeX)
 - LaTeX (.tex)
+- LaTeX + Bilder (.zip) - direkt in Overleaf importierbar
 - Word (.docx)
 
 ::: {.callout-note}
