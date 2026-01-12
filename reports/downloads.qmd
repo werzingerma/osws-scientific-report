@@ -1,0 +1,43 @@
+---
+title: "Downloads"
+subtitle: "PDF, LaTeX und Word Export"
+listing: false
+---
+
+## Verfügbare Downloads
+
+Alle Berichte werden automatisch in verschiedenen Formaten generiert.
+
+::: {.callout-tip}
+## Automatische Generierung
+PDF, LaTeX und Word-Dateien werden bei jedem Push automatisch von GitHub Actions erstellt.
+:::
+
+{{< include ../_downloads-list.md >}}
+
+---
+
+## Workflow
+
+Der Workflow ist jetzt ganz einfach:
+
+```bash
+# 1. Notebook erstellen und ausführen (in Jupyter)
+
+# 2. Pushen - fertig!
+git add .
+git commit -m "Add: Neuer Bericht"
+git push
+```
+
+GitHub Actions generiert automatisch:
+
+- HTML (Website)
+- PDF (mit TinyTeX)
+- LaTeX (.tex)
+- Word (.docx)
+
+::: {.callout-note}
+## Build-Zeit
+Das Generieren aller Formate dauert ca. 3-5 Minuten.
+:::
