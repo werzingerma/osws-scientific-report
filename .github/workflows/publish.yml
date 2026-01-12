@@ -1,0 +1,127 @@
+name: Publish Quarto Site
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python Dependencies
+        run: |
+          pip install jupyter pyyaml jupyter-cache
+
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: '1.4.553'
+
+      - name: Install TinyTeX
+        run: |
+          quarto install tinytex
+
+      - name: Create Downloads Directory
+        run: |
+          mkdir -p downloads
+
+      - name: Generate PDF, LaTeX, DOCX for all notebooks
+        run: |
+          for notebook in notebooks/*.ipynb; do
+            if [ -f "$notebook" ]; then
+              filename=$(basename "$notebook" .ipynb)
+              echo "Processing: $filename"
+
+              # PDF mit LaTeX
+              quarto render "$notebook" --no-execute --to pdf \
+                -M keep-tex:true \
+                -o "${filename}.pdf" \
+                --output-dir downloads/ || echo "PDF failed for $filename"
+
+              # LaTeX verschieben (wird im notebooks/ erstellt)
+              if [ -f "notebooks/${filename}.tex" ]; then
+                mv "notebooks/${filename}.tex" "downloads/${filename}.tex"
+              fi
+
+              # DOCX
+              quarto render "$notebook" --no-execute --to docx \
+                -o "${filename}.docx" \
+                --output-dir downloads/ || echo "DOCX failed for $filename"
+
+              # Aufräumen
+              rm -rf "notebooks/${filename}_files"
+            fi
+          done
+
+      - name: Generate Downloads List
+        run: |
+          # Erstelle die Markdown-Tabelle
+          echo "| Bericht | PDF | LaTeX | Word |" > _downloads-list.md
+          echo "|---------|-----|-------|------|" >> _downloads-list.md
+
+          for notebook in notebooks/*.ipynb; do
+            if [ -f "$notebook" ]; then
+              filename=$(basename "$notebook" .ipynb)
+
+              # Titel aus Notebook extrahieren
+              title=$(python3 scripts/extract_title.py "$notebook" "$filename")
+
+              echo "| $title | [PDF](/downloads/${filename}.pdf) | [LaTeX](/downloads/${filename}.tex) | [Word](/downloads/${filename}.docx) |" >> _downloads-list.md
+            fi
+          done
+
+          echo "=== Downloads List ==="
+          cat _downloads-list.md
+
+      - name: List generated downloads
+        run: |
+          echo "=== Generated Downloads ==="
+          ls -la downloads/
+
+      - name: Render HTML (Website)
+        run: |
+          quarto render --no-execute
+
+      - name: Verify downloads in _site
+        run: |
+          echo "=== _site/downloads content ==="
+          ls -la _site/downloads/ || echo "downloads folder missing in _site"
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
