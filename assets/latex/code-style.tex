@@ -10,3 +10,18 @@
   breakatwhitespace=false,
   postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space}
 }
+
+% Tabellen auf Seitenbreite skalieren
+\usepackage{adjustbox}
+\let\oldtabular\tabular
+\let\endoldtabular\endtabular
+\renewenvironment{tabular}{\begin{adjustbox}{max width=\textwidth}\oldtabular}{\endoldtabular\end{adjustbox}}
+
+% Longtable auch skalieren
+\usepackage{ltablex}
+\keepXColumns
+
+% Kleinere Schrift fuer Tabellen
+\usepackage{etoolbox}
+\AtBeginEnvironment{longtable}{\small}
+\AtBeginEnvironment{tabular}{\small}

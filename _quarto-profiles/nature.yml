@@ -41,6 +41,11 @@ format:
             breakatwhitespace=false,
             postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space}
           }
+          % Tabellen auf Seitenbreite skalieren
+          \usepackage{adjustbox}
+          \usepackage{etoolbox}
+          \AtBeginEnvironment{longtable}{\small}
+          \AtBeginEnvironment{tabular}{\small}
 
 csl: assets/csl/nature.csl
 bibliography: references.bib
