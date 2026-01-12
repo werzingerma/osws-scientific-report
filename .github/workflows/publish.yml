@@ -58,16 +58,10 @@ jobs:
           \fvset{breaklines=true,breakanywhere=true,fontsize=\scriptsize}
           \RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\scriptsize}
 
-          % Tabellen automatisch skalieren
-          \usepackage{adjustbox}
+          % Tabellen mit sehr kleiner Schrift
           \usepackage{etoolbox}
-          \AtBeginEnvironment{longtable}{\scriptsize}
-          \AtBeginEnvironment{tabular}{\scriptsize}
-
-          % Longtable auf Textbreite skalieren
-          \let\oldlongtable\longtable
-          \let\endoldlongtable\endlongtable
-          \renewenvironment{longtable}{\begin{adjustbox}{max width=\textwidth}\begin{oldlongtable}}{\end{oldlongtable}\end{adjustbox}}
+          \AtBeginEnvironment{longtable}{\tiny}
+          \AtBeginEnvironment{tabular}{\tiny}
           LATEX_EOF
 
       - name: Generate PDF, LaTeX, DOCX for all notebooks
