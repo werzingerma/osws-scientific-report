@@ -15,9 +15,11 @@ format:
     citecolor: "000000"
     urlcolor: "0000FF"
     fig-pos: "htbp"
-    fig-width: 6.5
-    fig-height: 4.5
+    fig-width: 5.5
+    fig-height: 4
     keep-tex: false
+    code-block-bg: "#f8f9fa"
+    code-block-border-left: "#e9ecef"
     include-in-header:
       - text: |
           \usepackage{booktabs}
@@ -29,6 +31,17 @@ format:
           \usepackage{lineno}
           \linenumbers
           \usepackage{times}
+          % Code-Block Formatierung für Zeilenumbruch
+          \usepackage{fvextra}
+          \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\},fontsize=\small}
+          % Lange Zeilen in Output umbrechen
+          \usepackage{listings}
+          \lstset{
+            basicstyle=\ttfamily\small,
+            breaklines=true,
+            breakatwhitespace=false,
+            postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space}
+          }
 
 csl: assets/csl/the-lancet.csl
 bibliography: references.bib
