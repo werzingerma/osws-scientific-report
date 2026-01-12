@@ -46,6 +46,30 @@ jobs:
         run: |
           mkdir -p downloads
 
+      - name: Create LaTeX header file
+        run: |
+          cat > /tmp/code-style.tex << 'LATEX_EOF'
+          % Code-Block Formatierung fuer Zeilenumbruch
+          \usepackage{fvextra}
+          \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,breaksymbol={},breakanywheresymbolpre={},commandchars=\\\{\},fontsize=\scriptsize}
+
+          % Verbatim-Output umbrechen
+          \usepackage{fancyvrb}
+          \fvset{breaklines=true,breakanywhere=true,fontsize=\scriptsize}
+          \RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\scriptsize}
+
+          % Tabellen automatisch skalieren
+          \usepackage{adjustbox}
+          \usepackage{etoolbox}
+          \AtBeginEnvironment{longtable}{\scriptsize}
+          \AtBeginEnvironment{tabular}{\scriptsize}
+
+          % Longtable auf Textbreite skalieren
+          \let\oldlongtable\longtable
+          \let\endoldlongtable\endlongtable
+          \renewenvironment{longtable}{\begin{adjustbox}{max width=\textwidth}\begin{oldlongtable}}{\end{oldlongtable}\end{adjustbox}}
+          LATEX_EOF
+
       - name: Generate PDF, LaTeX, DOCX for all notebooks
         run: |
           for notebook in notebooks/*.ipynb; do
@@ -56,24 +80,29 @@ jobs:
               # PDF mit LaTeX (mit Code-Umbruch und skalierten Tabellen)
               quarto render "$notebook" --no-execute --to pdf \
                 -M keep-tex:true \
-                -M geometry:"left=1.5cm,right=1.5cm,top=2cm,bottom=2cm" \
-                -M fig-width:6 \
+                -M geometry:"left=1cm,right=1cm,top=1.5cm,bottom=1.5cm" \
+                -M fig-width:6.5 \
                 -M fig-height:4 \
-                -M fontsize:10pt \
-                -M include-in-header:assets/latex/code-style.tex \
+                -M fontsize:9pt \
+                -M include-in-header:/tmp/code-style.tex \
                 -o "${filename}.pdf" \
                 --output-dir downloads/ || echo "PDF failed for $filename"
 
               # LaTeX und Bilder als ZIP für Overleaf erstellen
               if [ -f "notebooks/${filename}.tex" ]; then
-                # ZIP-Ordner erstellen
-                mkdir -p "downloads/${filename}_latex"
-                mv "notebooks/${filename}.tex" "downloads/${filename}_latex/main.tex"
+                # ZIP-Ordner mit korrektem Namen erstellen (muss zum LaTeX-Pfad passen)
+                mkdir -p "downloads/${filename}_latex/${filename}_files/figure-pdf"
 
-                # Bilder-Ordner kopieren falls vorhanden
+                # .tex Datei kopieren
+                cp "notebooks/${filename}.tex" "downloads/${filename}_latex/main.tex"
+
+                # Bilder-Ordner kopieren falls vorhanden (mit Original-Struktur)
                 if [ -d "notebooks/${filename}_files" ]; then
-                  cp -r "notebooks/${filename}_files" "downloads/${filename}_latex/figures"
+                  cp -r "notebooks/${filename}_files/"* "downloads/${filename}_latex/${filename}_files/"
                 fi
+
+                # Im LaTeX die Pfade anpassen (relativ machen)
+                # Nichts zu ändern - Pfade sind bereits relativ wie ${filename}_files/figure-pdf/...
 
                 # ZIP erstellen
                 cd downloads
