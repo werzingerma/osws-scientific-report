@@ -1,0 +1,152 @@
+---
+title: "Workflow-Übersicht"
+subtitle: "Der automatisierte Prozess von der Analyse zur Veröffentlichung"
+---
+
+## Workflow-Diagramm
+
+```{mermaid}
+flowchart LR
+    A[Jupyter Notebook<br/>erstellen & ausführen] --> B[Git Commit & Push]
+    B --> C[GitHub Action<br/>startet automatisch]
+    C --> D[Quarto baut<br/>Website + Downloads]
+    D --> E[GitHub Pages<br/>Deployment]
+    E --> F[Report online<br/>mit PDF/LaTeX/Word]
+
+    style A fill:#005a8c,color:#fff
+    style B fill:#007cb0,color:#fff
+    style C fill:#4a9b5e,color:#fff
+    style D fill:#4a9b5e,color:#fff
+    style E fill:#4a9b5e,color:#fff
+    style F fill:#005a8c,color:#fff
+```
+
+---
+
+## Der Prozess im Detail
+
+### 1. Jupyter Notebook erstellen & ausführen
+
+Du arbeitest wie gewohnt in deinem Jupyter Notebook im Ordner `notebooks/`. Die Analyse wird lokal durchgeführt - alle Berechnungen, Visualisierungen und Outputs entstehen auf deinem Rechner.
+
+**Was du dabei machst:**
+
+- Daten laden und verarbeiten
+- Statistische Analysen durchführen
+- Grafiken erstellen
+- Ergebnisse interpretieren
+
+**Wichtig:** Das Notebook muss vollständig ausgeführt sein. Alle Zellen sollten ihre Outputs enthalten, damit diese später im Report erscheinen.
+
+---
+
+### 2. Git Commit & Push
+
+Die Änderungen werden versioniert und zu GitHub übertragen:
+
+```bash
+git add .
+git commit -m "Add: Neue Analyse XY"
+git push
+```
+
+**Was dabei passiert:**
+
+- Alle Änderungen werden lokal gespeichert (Commit)
+- Der Commit wird zu GitHub hochgeladen (Push)
+- Die Historie aller Änderungen bleibt erhalten
+
+**Das war's!** Kein lokales Rendern nötig.
+
+---
+
+### 3. GitHub Action (automatisch)
+
+Sobald der Push bei GitHub ankommt, startet automatisch ein Workflow:
+
+**Was dabei passiert:**
+
+- GitHub erkennt den neuen Push
+- Ein virtueller Server wird gestartet
+- Python, Quarto und TinyTeX werden installiert
+- Das gesamte Projekt wird gebaut
+
+Du musst hier **nichts tun** - alles läuft automatisch.
+
+---
+
+### 4. Quarto baut Website + Downloads
+
+Auf dem GitHub-Server wird die komplette Website und alle Downloads generiert:
+
+**Was dabei passiert:**
+
+- Alle Notebooks werden zu HTML gerendert
+- **PDF-Dateien** werden mit TinyTeX erstellt
+- **LaTeX-Dateien** (.tex) werden generiert
+- **Word-Dateien** (.docx) werden erstellt
+- Die **Downloads-Tabelle** wird automatisch aktualisiert
+- Navigation und Styles werden angewendet
+
+---
+
+### 5. GitHub Pages Deployment
+
+Die fertige Website wird automatisch veröffentlicht:
+
+**Was dabei passiert:**
+
+- Die generierten Dateien werden auf GitHub Pages kopiert
+- Die alte Version wird ersetzt
+- Die Website ist unter der GitHub Pages URL erreichbar
+
+---
+
+### 6. Report online mit Downloads
+
+Nach ca. 3-5 Minuten ist der neue Report auf der Website sichtbar - inklusive aller Download-Optionen.
+
+**Vorteile:**
+
+- Keine manuelle Veröffentlichung nötig
+- PDF, LaTeX und Word automatisch generiert
+- Automatische Versionierung
+- Immer aktueller Stand
+- Von überall erreichbar
+
+---
+
+## Zusammenfassung
+
+| Schritt | Was du tust | Was automatisch passiert |
+|---------|-------------|-------------------------|
+| 1. Notebook | Analyse durchführen & ausführen | - |
+| 2. Push | `git add . && git commit && git push` | Upload zu GitHub |
+| 3-5. Deploy | - | HTML, PDF, LaTeX, Word + Veröffentlichung |
+| 6. Fertig | Link teilen | Downloads verfügbar |
+
+Der gesamte Prozess ab dem Push dauert typischerweise **3-5 Minuten**.
+
+---
+
+## Vorteile dieses Workflows
+
+::: {.grid}
+
+::: {.g-col-6}
+### Für dich
+- Kein manuelles Copy-Paste
+- Keine Formatierungsarbeit
+- Fokus auf die Analyse
+- Einheitliches Design automatisch
+:::
+
+::: {.g-col-6}
+### Für das Team
+- Immer aktuelle Berichte
+- Nachvollziehbare Historie
+- Zentrale Ablage
+- Einfacher Zugriff
+:::
+
+:::
