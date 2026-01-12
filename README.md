@@ -1,72 +1,67 @@
 # PRECISION Scientific Reports
 
-Automatisierter Workflow für wissenschaftliche Berichte mit Quarto und GitHub Pages.
+Automated workflow for scientific reports with Quarto and GitHub Pages.
 
 ## Features
 
-- 📊 **Jupyter Notebooks** → automatische Konvertierung zu HTML/PDF/LaTeX/Word
-- 🚀 **GitHub Actions** - Vollautomatisches Deployment
-- 📚 **Journal-Profile** für Springer, Elsevier, Nature, Lancet
-- 📖 **Zotero-Integration** für Literaturverwaltung
-- 🎨 **Responsive Design** mit Custom PRECISION Theme
-- 🔄 **Automatische Downloads-Generierung**
+- **Jupyter Notebooks** → automatic conversion to HTML/PDF/LaTeX/Word
+- **GitHub Actions** - Fully automated deployment
+- **Journal Profiles** for Springer, Elsevier, Nature, Lancet
+- **Zotero Integration** for reference management
+- **Responsive Design** with custom PRECISION theme
+- **Automatic Downloads Generation**
 
 ## Quick Start
 
 ```bash
-# 1. Repository klonen
+# 1. Clone repository
 git clone https://github.com/werzingerma/osws-scientific-report.git
 cd osws-scientific-report
 
-# 2. Python-Umgebung einrichten
+# 2. Set up Python environment
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-# 3. Notebook erstellen
-# - Erstelle ein Jupyter Notebook in notebooks/
-# - Führe alle Zellen aus
-# - Füge YAML-Header in Raw-Zelle hinzu
+# 3. Create notebook
+# - Create a Jupyter Notebook in notebooks/
+# - Run all cells
+# - Add YAML header in raw cell
 
-# 4. Pushen - fertig!
+# 4. Push - done!
 git add .
-git commit -m "Add: Neuer Bericht"
+git commit -m "Add: New report"
 git push
 ```
 
-GitHub Actions generiert automatisch alle Formate (HTML, PDF, LaTeX, Word) und deployed die Website.
+GitHub Actions automatically generates all formats (HTML, PDF, LaTeX, Word) and deploys the website.
 
-## Projekt-Struktur
+## Project Structure
 
 ```
 osws-scientific-report/
 ├── notebooks/           # Jupyter Notebooks
-├── reports/            # Generierte Reports
-├── assets/             
+├── reports/            # Generated Reports
+├── assets/
 │   ├── css/           # Custom Styles
 │   ├── csl/           # Citation Styles
-│   └── images/        # Logos und Grafiken
+│   └── images/        # Logos and Graphics
 ├── downloads/          # PDF/LaTeX/Word Downloads
 ├── scripts/           # Helper Scripts
-├── _quarto-profiles/  # Journal-spezifische Formate
+├── _quarto-profiles/  # Journal-specific Formats
 ├── .github/workflows/ # GitHub Actions
-└── references.bib     # Bibliographie
+└── references.bib     # Bibliography
 ```
 
-## Technologien
+## Technologies
 
 - **Quarto** - Publishing System
 - **Python** - Data Analysis
 - **GitHub Actions** - CI/CD
 - **TinyTeX** - LaTeX/PDF Generation
-- **Bootstrap** - UI Framework
 
-## Dokumentation
+## Documentation
 
-- [Anleitung](https://werzingerma.github.io/osws-scientific-report/guide.html) - Setup & Nutzung
-- [Workflow](https://werzingerma.github.io/osws-scientific-report/workflow.html) - Prozess-Übersicht
-- [Berichte](https://werzingerma.github.io/osws-scientific-report/reports/) - Alle Reports
-
-## Lizenz
-
-MIT License - Siehe LICENSE Datei
+- [Guide](https://werzingerma.github.io/osws-scientific-report/guide.html) - Setup & Usage
+- [Workflow](https://werzingerma.github.io/osws-scientific-report/workflow.html) - Process Overview
+- [Reports](https://werzingerma.github.io/osws-scientific-report/reports/) - All Reports
